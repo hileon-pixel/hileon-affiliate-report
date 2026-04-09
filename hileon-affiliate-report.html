@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hileon · Affiliate Report</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #090e16;
+    --surface:  #111827;
+    --border:   #1e2d3d;
+    --teal:     #0fd4b4;
+    --teal-dim: #0fd4b415;
+    --teal-mid: #0fd4b430;
+    --gold:     #f5a623;
+    --gold-dim: #f5a62315;
+    --green:    #34d399;
+    --red:      #f87171;
+    --red-dim:  #f8717115;
+    --text:     #e8f0fe;
+    --muted:    #4a6080;
+    --subtle:   #1e2d3d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #0fd4b412 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .logo-mark {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0a6e5e, #0fd4b4);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 24px #0fd4b425;
+    flex-shrink: 0;
+  }
+
+  .logo-text { font-family: 'Syne', sans-serif; }
+  .logo-text h1 { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+  .logo-text p  { font-size: 12px; color: var(--muted); margin-top: 1px; letter-spacing: 0.5px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .card-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  /* ── Login ── */
+  .login-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .field { margin-bottom: 14px; }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .field input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .field input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px var(--teal-dim);
+  }
+
+  .field input::placeholder {
+    color: var(--muted);
+    letter-spacing: 1px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #0a8a76, #0fd4b4);
+    color: #051210;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  .btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+  .btn:active:not(:disabled) { transform: translateY(0); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .btn-ghost {
+    background: var(--surface);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .error-box {
+    background: var(--red-dim);
+    border: 1px solid #f8717133;
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: var(--red);
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+    line-height: 1.5;
+  }
+
+  /* ── Report ── */
+  .welcome-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .welcome-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .welcome-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  .code-pill {
+    background: var(--teal-dim);
+    border: 1px solid var(--teal-mid);
+    border-radius: 10px;
+    padding: 8px 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .code-pill-label { font-size: 9px; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+  .code-pill-val   { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; color: var(--teal); letter-spacing: 4px; margin-top: 2px; }
+
+  /* Stats grid */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .stat-val  { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; }
+  .stat-lbl  { font-size: 10px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .c-teal  { color: var(--teal); }
+  .c-gold  { color: var(--gold); }
+  .c-green { color: var(--green); }
+  .c-red   { color: var(--red); }
+
+  /* Plan breakdown */
+  .plan-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .plan-row:last-child { border-bottom: none; }
+
+  .plan-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  .plan-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .plan-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .plan-earn  { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: var(--teal); }
+
+  /* Conversion rows */
+  .conv-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .conv-row:last-child { border-bottom: none; }
+
+  .conv-date { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .conv-plan { font-size: 13px; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .conv-tier { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  .conv-right { text-align: right; }
+  .conv-comm  { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: var(--teal); }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+  .badge-paid   { background: #34d39918; color: var(--green); border: 1px solid #34d39930; }
+  .badge-unpaid { background: var(--red-dim); color: var(--red); border: 1px solid #f8717130; }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.5; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 32px;
+    line-height: 1.7;
+  }
+
+  .footer a { color: var(--teal); text-decoration: none; }
+
+  /* Spinner */
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid #05121044;
+    border-top-color: #051210;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.10s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.20s; }
+
+  #view-login  { display: block; }
+  #view-report { display: none; }
+
+  @media (max-width: 400px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat-val { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-mark">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <h1>Hileon</h1>
+      <p>AFFILIATE PORTAL</p>
+    </div>
+  </div>
+
+  <!-- ── LOGIN VIEW ── -->
+  <div id="view-login">
+    <div class="card stagger-1">
+      <div class="login-title">Your Earnings Report</div>
+      <div class="login-sub">Enter your promo code and PIN to view your conversions and commissions.</div>
+
+      <div id="error-box" class="error-box"></div>
+
+      <div class="field">
+        <label>Promo Code</label>
+        <input type="text" id="inp-code" placeholder="e.g. XKQMV" maxlength="5" autocomplete="off" oninput="this.value=this.value.toUpperCase()" />
+      </div>
+
+      <div class="field">
+        <label>Your PIN</label>
+        <input type="password" id="inp-pin" placeholder="5-digit PIN" maxlength="5" autocomplete="off" />
+      </div>
+
+      <button class="btn" id="login-btn" onclick="login()">View My Report →</button>
+    </div>
+
+    <div class="footer stagger-2">
+      Your code and PIN were sent to you by Hileon.<br>
+      Need help? <a href="mailto:hileonbt@gmail.com">hileonbt@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- ── REPORT VIEW ── -->
+  <div id="view-report">
+
+    <!-- Identity card -->
+    <div class="card stagger-1">
+      <div class="welcome-row">
+        <div>
+          <div class="welcome-name" id="r-name"></div>
+          <div class="welcome-meta" id="r-meta"></div>
+        </div>
+        <div class="code-pill">
+          <div class="code-pill-label">Your Code</div>
+          <div class="code-pill-val" id="r-code"></div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-val c-gold" id="r-conversions">0</div>
+          <div class="stat-lbl">Conversions</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val c-teal" id="r-earned">$0.00</div>
+          <div class="stat-lbl">Total Earned</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val c-green" id="r-paid">$0.00</div>
+          <div class="stat-lbl">Paid to You</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val c-red" id="r-unpaid">$0.00</div>
+          <div class="stat-lbl">Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan breakdown -->
+    <div class="card stagger-2">
+      <div class="card-label">Earnings by Plan</div>
+      <div id="r-plans"></div>
+    </div>
+
+    <!-- Recent conversions -->
+    <div class="card stagger-3">
+      <div class="card-label">Recent Conversions</div>
+      <div id="r-convs"></div>
+    </div>
+
+    <!-- Sign out -->
+    <div style="margin-top:8px;" class="stagger-4">
+      <button class="btn btn-ghost" onclick="logout()">Sign Out</button>
+    </div>
+
+    <div class="footer" style="margin-top:20px;">
+      Commissions are paid after Google Play settles your month's earnings.<br>
+      Questions? <a href="mailto:hileonbt@gmail.com">hileonbt@gmail.com</a>
+    </div>
+  </div>
+
+</div>
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA75f1uz6BXaQPNsEzfb_1Fa7eexlN9vbpKk5gbibhhAlkTD1lEDdgftUpnGqre7TF/exec";
+
+  async function login() {
+    const code = document.getElementById("inp-code").value.trim().toUpperCase();
+    const pin  = document.getElementById("inp-pin").value.trim();
+    const btn  = document.getElementById("login-btn");
+
+    hideError();
+
+    if (!code || code.length !== 5) { showError("Please enter your 5-letter promo code."); return; }
+    if (!pin  || pin.length  !== 5) { showError("Please enter your 5-digit PIN.");          return; }
+
+    btn.innerHTML = '<span class="spinner"></span>Loading...';
+    btn.disabled  = true;
+
+    try {
+      const url  = SCRIPT_URL + "?action=report&code=" + encodeURIComponent(code) + "&pin=" + encodeURIComponent(pin);
+      const res  = await fetch(url);
+      const data = await res.json();
+
+      if (!data.ok) {
+        showError(data.error || "Login failed. Please check your code and PIN.");
+        btn.innerHTML = "View My Report →";
+        btn.disabled  = false;
+        return;
+      }
+
+      renderReport(data);
+
+    } catch(e) {
+      showError("Connection error. Please check your internet and try again.");
+      btn.innerHTML = "View My Report →";
+      btn.disabled  = false;
+    }
+  }
+
+  function renderReport(d) {
+    document.getElementById("r-name").textContent        = d.influencer;
+    document.getElementById("r-meta").textContent        = "Joined " + (d.dateAdded || "—") + (d.platform ? "  ·  " + d.platform : "");
+    document.getElementById("r-code").textContent        = d.code;
+    document.getElementById("r-conversions").textContent = d.totalConversions;
+    document.getElementById("r-earned").textContent      = d.totalEarned;
+    document.getElementById("r-paid").textContent        = d.totalPaid;
+    document.getElementById("r-unpaid").textContent      = d.totalUnpaid;
+
+    // Plan breakdown
+    const plansEl  = document.getElementById("r-plans");
+    const entries  = Object.entries(d.planBreakdown || {});
+    const dotColors = ["#0fd4b4","#f5a623","#a78bfa","#34d399","#f87171","#60a5fa"];
+
+    if (entries.length === 0) {
+      plansEl.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div>No conversions yet. Share your code to start earning!</div>';
+    } else {
+      plansEl.innerHTML = entries.map(([plan, info], i) =>
+        `<div class="plan-row">
+          <div style="display:flex;align-items:center;flex:1;">
+            <div class="plan-dot" style="background:${dotColors[i % dotColors.length]}"></div>
+            <div>
+              <div class="plan-name">${plan}</div>
+              <div class="plan-count">${info.count} conversion${info.count !== 1 ? "s" : ""}</div>
+            </div>
+          </div>
+          <div class="plan-earn">$${info.earned.toFixed(2)}</div>
+        </div>`
+      ).join("");
+    }
+
+    // Recent conversions
+    const convsEl = document.getElementById("r-convs");
+    if (!d.recentConversions || d.recentConversions.length === 0) {
+      convsEl.innerHTML = '<div class="empty-state"><div class="empty-icon">🎯</div>No conversions yet.<br>Share your code with your audience to get started!</div>';
+    } else {
+      convsEl.innerHTML = d.recentConversions.map(c =>
+        `<div class="conv-row">
+          <div style="flex:1;">
+            <div class="conv-date">${c.date}</div>
+            <div class="conv-plan">${c.plan} · ${c.billing}</div>
+            <div class="conv-tier">${c.tier} tier</div>
+          </div>
+          <div class="conv-right">
+            <div class="conv-comm">${c.commission}</div>
+            <span class="badge ${c.paid === 'Yes' ? 'badge-paid' : 'badge-unpaid'}">${c.paid === 'Yes' ? 'Paid' : 'Pending'}</span>
+          </div>
+        </div>`
+      ).join("");
+    }
+
+    document.getElementById("view-login").style.display  = "none";
+    document.getElementById("view-report").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function logout() {
+    document.getElementById("view-login").style.display  = "block";
+    document.getElementById("view-report").style.display = "none";
+    document.getElementById("inp-code").value = "";
+    document.getElementById("inp-pin").value  = "";
+    document.getElementById("login-btn").innerHTML = "View My Report →";
+    document.getElementById("login-btn").disabled  = false;
+    hideError();
+  }
+
+  function showError(msg) {
+    const el = document.getElementById("error-box");
+    el.textContent   = msg;
+    el.style.display = "block";
+  }
+
+  function hideError() {
+    document.getElementById("error-box").style.display = "none";
+  }
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") login();
+  });
+</script>
+</body>
+</html>
