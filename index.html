@@ -309,6 +309,10 @@
   }
   .badge-paid   { background: #34d39918; color: var(--green); border: 1px solid #34d39930; }
   .badge-unpaid { background: var(--red-dim); color: var(--red); border: 1px solid #f8717130; }
+  .badge-cancelled { background: var(--muted); background: #4a608018; color: var(--muted); border: 1px solid #4a608044; }
+
+  /* Cancelled-row commission shown with strikethrough so the lost amount reads visually */
+  .conv-comm-strike { text-decoration: line-through; opacity: 0.7; color: var(--muted); }
 
   .empty-state {
     text-align: center;
@@ -442,6 +446,14 @@
           <div class="stat-val c-red" id="r-unpaid">$0.00</div>
           <div class="stat-lbl">Pending</div>
         </div>
+        <div class="stat">
+          <div class="stat-val c-red" id="r-cancelled">0</div>
+          <div class="stat-lbl">Cancelled</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val c-teal" id="r-net">$0.00</div>
+          <div class="stat-lbl">Net Earned</div>
+        </div>
       </div>
     </div>
 
@@ -455,6 +467,12 @@
     <div class="card stagger-3">
       <div class="card-label">Recent Conversions</div>
       <div id="r-convs"></div>
+    </div>
+
+    <!-- Recent cancellations (hidden when none) -->
+    <div class="card stagger-3" id="r-cancels-card" style="display:none;">
+      <div class="card-label">Recent Cancellations</div>
+      <div id="r-cancels"></div>
     </div>
 
     <!-- Sign out -->
@@ -514,6 +532,8 @@
     document.getElementById("r-earned").textContent      = d.totalEarned;
     document.getElementById("r-paid").textContent        = d.totalPaid;
     document.getElementById("r-unpaid").textContent      = d.totalUnpaid;
+    document.getElementById("r-cancelled").textContent   = d.totalCancelled || 0;
+    document.getElementById("r-net").textContent         = d.netEarned || d.totalEarned;
 
     // Plan breakdown
     const plansEl  = document.getElementById("r-plans");
@@ -552,6 +572,29 @@
           <div class="conv-right">
             <div class="conv-comm">${c.commission}</div>
             <span class="badge ${c.paid === 'Yes' ? 'badge-paid' : 'badge-unpaid'}">${c.paid === 'Yes' ? 'Paid' : 'Pending'}</span>
+          </div>
+        </div>`
+      ).join("");
+    }
+
+    // Recent cancellations — only render the section if there are any
+    const cancelsCard = document.getElementById("r-cancels-card");
+    const cancelsEl   = document.getElementById("r-cancels");
+    const cancels     = d.recentCancellations || [];
+    if (cancels.length === 0) {
+      cancelsCard.style.display = "none";
+    } else {
+      cancelsCard.style.display = "block";
+      cancelsEl.innerHTML = cancels.map(c =>
+        `<div class="conv-row">
+          <div style="flex:1;">
+            <div class="conv-date">${c.date}${c.cancelDate ? ' &middot; cancelled ' + c.cancelDate : ''}</div>
+            <div class="conv-plan">${c.plan} &middot; ${c.billing}</div>
+            <div class="conv-tier">${c.tier} tier</div>
+          </div>
+          <div class="conv-right">
+            <div class="conv-comm conv-comm-strike">${c.commission}</div>
+            <span class="badge badge-cancelled">${c.status || 'Cancelled'}</span>
           </div>
         </div>`
       ).join("");
